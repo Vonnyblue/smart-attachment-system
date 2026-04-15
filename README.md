@@ -31,6 +31,15 @@ uvicorn app.main:app --reload
 cd ..
 ```
 
+```
+cd frontend
+```
+- Ensure lucide-react and tailwind css are installed
+```
+npm install lucide-react tailwindcss postcss autoprefixer
+```
+
+
 - Run the frontend
 ```
 npm run dev
