@@ -27,14 +27,21 @@ def _serialize_user(current_user: User):
 def get_profile(current_user: User = Depends(get_current_user)):
     return _serialize_user(current_user)
 
-
 @router.put("/update-profile")
 def update_profile(
     data: UpdateProfile,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    for field_name, value in data.model_dump(exclude_unset=True).items():
+    update_data = data.model_dump(exclude_unset=True)
+
+    # Normalize skills to lowercase
+    if "skills" in update_data and update_data["skills"]:
+        update_data["skills"] = ", ".join(
+            s.strip().lower() for s in update_data["skills"].split(",") if s.strip()
+        )
+
+    for field_name, value in update_data.items():
         setattr(current_user, field_name, value)
 
     db.commit()
@@ -43,6 +50,7 @@ def update_profile(
         "message": "Profile updated",
         "user": _serialize_user(current_user),
     }
+
 
 
 @router.put("/update-notification")

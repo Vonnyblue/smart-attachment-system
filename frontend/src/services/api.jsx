@@ -14,23 +14,25 @@ api.interceptors.request.use((config) => {
 
 export const authAPI = {
   register: async (userData) => {
-    const params = new URLSearchParams();
-    params.append("name", userData.name);
-    params.append("email", userData.email);
-    params.append("password", userData.password);
-    params.append("notification_frequency", userData.notification_frequency || "daily");
-    params.append("role", userData.role || "student");
+  const params = new URLSearchParams();
+  params.append("name", userData.name);
+  params.append("email", userData.email);
+  params.append("password", userData.password);
+  params.append("notification_frequency", userData.notification_frequency || "daily");
+  params.append("role", userData.role || "student");
 
-    if (userData.field) params.append("field", userData.field);
-    if (userData.skills) params.append("skills", userData.skills);
-    if (userData.preferred_location) params.append("preferred_location", userData.preferred_location);
-    if (userData.bio) params.append("bio", userData.bio);
+  if (userData.field) params.append("field", userData.field);
+  if (userData.skills) params.append("skills", userData.skills);
+  if (userData.preferred_location) params.append("preferred_location", userData.preferred_location);
+  if (userData.bio) params.append("bio", userData.bio);
+  if (userData.company_name) params.append("company_name", userData.company_name);
+  if (userData.company_description) params.append("company_description", userData.company_description);
 
-    const response = await api.post("/auth/register", params, {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    });
-    return response.data;
-  },
+  const response = await api.post("/auth/register", params, {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  });
+  return response.data;
+ },
 
   login: async (credentials) => {
     const params = new URLSearchParams();
@@ -59,6 +61,25 @@ export const userAPI = {
     const response = await api.put("/user/update-notification", notificationData);
     return response.data;
   },
+};
+
+export const jobsAPI = {
+  // HR
+  createJob: (data) => api.post("/jobs/", data).then(r => r.data),
+  myJobs: () => api.get("/jobs/my").then(r => r.data),
+  updateJob: (id, data) => api.patch(`/jobs/${id}`, data).then(r => r.data),
+  deleteJob: (id) => api.delete(`/jobs/${id}`).then(r => r.data),
+
+  // Student
+  matchPlatformJobs: () => api.get("/jobs/match").then(r => r.data),
+  listSkills: () => api.get("/jobs/skills").then(r => r.data),
+};
+
+export const applicationsAPI = {
+  apply: (jobId, coverNote) => api.post("/applications/", { job_id: jobId, cover_note: coverNote }).then(r => r.data),
+  myApplications: () => api.get("/applications/my").then(r => r.data),
+  forHR: () => api.get("/applications/for-hr").then(r => r.data),
+  updateStatus: (id, status) => api.patch(`/applications/${id}/status?status=${status}`).then(r => r.data),
 };
 
 export const internshipAPI = {

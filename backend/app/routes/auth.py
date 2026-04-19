@@ -17,6 +17,22 @@ def get_db():
         db.close()
 
 
+def _user_response(user: User) -> dict:
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "notification_frequency": user.notification_frequency,
+        "role": user.role,
+        "company_name": user.company_name,
+        "company_description": getattr(user, "company_description", None),
+        "field": user.field,
+        "skills": user.skills,
+        "preferred_location": user.preferred_location,
+        "bio": user.bio,
+    }
+
+
 @router.post("/register")
 def register(
     name: str = Form(...),
@@ -25,6 +41,7 @@ def register(
     notification_frequency: str = Form("daily"),
     role: str = Form("student"),
     company_name: str = Form(None),
+    company_description: str = Form(None),
     field: str = Form(None),
     skills: str = Form(None),
     preferred_location: str = Form(None),
@@ -36,8 +53,13 @@ def register(
         raise HTTPException(status_code=400, detail="Email already registered")
 
     normalized_role = (role or "student").lower()
-    if normalized_role not in {"student", "admin"}:
-        raise HTTPException(status_code=400, detail="Unsupported role")
+
+    # Admin cannot be created via registration — it is seeded only
+    if normalized_role not in {"student", "hr"}:
+        raise HTTPException(status_code=403, detail="Cannot register with that role.")
+    
+    if skills:
+        skills = ", ".join(s.strip().lower() for s in skills.split(",") if s.strip())
 
     new_user = User(
         name=name,
@@ -45,10 +67,11 @@ def register(
         password=hash_password(password),
         notification_frequency=notification_frequency,
         role=normalized_role,
-        company_name=company_name,
-        field=field,
-        skills=skills,
-        preferred_location=preferred_location,
+        company_name=company_name if normalized_role == "hr" else None,
+        company_description=company_description if normalized_role == "hr" else None,
+        field=field if normalized_role == "student" else None,
+        skills=skills if normalized_role == "student" else None,
+        preferred_location=preferred_location if normalized_role == "student" else None,
         bio=bio,
     )
 
@@ -62,18 +85,7 @@ def register(
         "message": "User created successfully",
         "access_token": token,
         "token_type": "bearer",
-        "user": {
-            "id": new_user.id,
-            "name": new_user.name,
-            "email": new_user.email,
-            "notification_frequency": new_user.notification_frequency,
-            "role": new_user.role,
-            "company_name": new_user.company_name,
-            "field": new_user.field,
-            "skills": new_user.skills,
-            "preferred_location": new_user.preferred_location,
-            "bio": new_user.bio,
-        },
+        "user": _user_response(new_user),
     }
 
 
@@ -81,7 +93,7 @@ def register(
 def login(
     email: str = Form(...),
     password: str = Form(...),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     user = db.query(User).filter(User.email == email).first()
 
@@ -93,16 +105,5 @@ def login(
     return {
         "access_token": token,
         "token_type": "bearer",
-        "user": {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "notification_frequency": user.notification_frequency,
-            "role": user.role or "student",
-            "company_name": user.company_name,
-            "field": user.field,
-            "skills": user.skills,
-            "preferred_location": user.preferred_location,
-            "bio": user.bio,
-        },
+        "user": _user_response(user),
     }

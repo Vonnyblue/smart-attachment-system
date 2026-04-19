@@ -34,7 +34,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Smart Attachment</h2>
-            <p className="text-gray-600">Sign in as a student or admin to continue.</p>
+            <p className="text-gray-600">Sign in as a student or HR to continue.</p>
           </div>
 
           <div className="flex mb-8 bg-gray-100 rounded-lg p-1">

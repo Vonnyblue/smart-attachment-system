@@ -70,19 +70,14 @@ const LoginPage = () => {
             <span className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Smart Attachment</span>
           </Link>
           <h2 className="mt-8 text-3xl font-bold text-gray-900">Welcome back</h2>
-          <p className="mt-3 text-lg text-gray-600">Sign in to access your student or admin workspace</p>
+          <p className="mt-3 text-lg text-gray-600">Sign in to access your student or HR workspace</p>
           <p className="mt-4 text-sm text-gray-600">
             Don&apos;t have an account?{" "}
             <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
               Create one here
             </Link>
           </p>
-          <p className="mt-2 text-sm text-gray-600">
-            Need admin access?{" "}
-            <Link to="/register?role=admin" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-              Create an admin account
-            </Link>
-          </p>
+          
         </div>
 
         <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">

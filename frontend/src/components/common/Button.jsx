@@ -1,4 +1,5 @@
 import React from 'react';
+import { twMerge } from '../../lib/tw';
 
 const Button = ({ 
   children, 
@@ -25,8 +26,8 @@ const Button = ({
     lg: 'px-6 py-3 text-lg',
   };
   
-  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
-  
+  const classes = twMerge(`${baseClasses} ${variants[variant]} ${sizes[size]}`, className);
+
   return (
     <button
       type={type}

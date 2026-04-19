@@ -3,6 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./hooks/useAuth";
 import MainLayout from "./layouts/MainLayout";
 import AboutPage from "./pages/AboutPage";
+import HRDashboard from "./pages/hr/HRDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
@@ -38,6 +39,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={["student", "admin"]}>
             <StudentDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/hr/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["hr"]}>
+            <HRDashboard />
           </ProtectedRoute>
         }
       />
