@@ -149,7 +149,7 @@ const LandingPage = () => {
               Create student account
             </Button>
             <Button onClick={() => navigate("/register?role=admin")} variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3">
-              Create admin account
+              Create HR/Employer account
             </Button>
           </div>
         </div>

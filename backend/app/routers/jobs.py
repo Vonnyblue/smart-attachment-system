@@ -110,7 +110,7 @@ def match_jobs_for_student(db: Session = Depends(get_db), current_user: User = D
                 "company": j.company,
                 "location": j.location,
                 "skills_required": j.skills_required,
-                "apply_link": None,  # apply via platform
+                "apply_link": j.apply_link,
                 "is_platform_job": True,
                 "posted_at": j.posted_at,
             }

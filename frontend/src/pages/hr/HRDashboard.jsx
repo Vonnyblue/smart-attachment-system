@@ -14,7 +14,7 @@ const HRDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({title:  "", location: "", description: "", skills_required: "", is_remote: false });
+  const [form, setForm] = useState({title:  "", location: "", description: "", skills_required: "", is_remote: false, apply_link: "" });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -48,7 +48,8 @@ const HRDashboard = () => {
         location: "",
         description: "",
         skills_required: "",
-        is_remote: false
+        is_remote: false,
+        apply_link: ""
         });
 
         setShowForm(false);
@@ -110,6 +111,13 @@ const HRDashboard = () => {
                     placeholder="Intern / Developer / etc"
                 />
                 <Input label="Location" name="location" value={form.location} onChange={handleFormChange} placeholder="Nairobi, Remote..." />
+                <Input
+                  label="Application link (optional)"
+                  name="apply_link"
+                  value={form.apply_link}
+                  onChange={handleFormChange}
+                  placeholder="https://careers.company.com/apply..."
+                />
                 <SkillsInput
                   label="Skills required"
                   name="skills_required"

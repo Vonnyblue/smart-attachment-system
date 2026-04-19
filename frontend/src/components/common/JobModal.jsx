@@ -30,6 +30,19 @@ const JobModal = ({ job, onClose, onApply, appStatus, applyingTo }) => {
       ) : null;
     }
 
+    // Platform job with an external apply link — skip internal apply flow
+    if (job.apply_link) {
+      return (
+        <Button
+          className="bg-slate-900 hover:bg-slate-800 text-white"
+          onClick={() => window.open(job.apply_link, "_blank", "noopener,noreferrer")}
+        >
+          Apply on company site
+        </Button>
+      );
+    }
+
+    // Platform job without a link — use internal apply flow
     if (appStatus === "accepted") return <span className="text-emerald-600 font-medium">✓ Accepted</span>;
     if (appStatus === "rejected") return <span className="text-red-500 font-medium">✗ Not selected</span>;
     if (appStatus === "pending") return <span className="text-slate-500 font-medium">Pending review</span>;
