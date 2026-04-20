@@ -13,7 +13,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "vercel.app",
+        "https://smart-attachment-system.vercel.app",
         "*"
     ],
     allow_credentials=True,
